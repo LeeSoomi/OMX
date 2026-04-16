@@ -105,10 +105,42 @@ omx_l_leader_ai.launch.py와
 omx_f_follower_ai.launch.py 두 개
 둘 다 port_name의 기본값을 실제 /dev/serial/by-id/... 값으로 바꿔야
 
+컨테이너 안에서 이 경로로 간다
+cd /root/ros2_ws/src
+그 다음 파일 찾기
+find . | grep omx_l_leader_ai.launch.py
+find . | grep omx_f_follower_ai.launch.py
+
+예를 들어 경로가 이렇게 나왔다고 치면
+./open_manipulator_bringup/launch/omx_l_leader_ai.launch.py
+
+열기
+nano ./open_manipulator_bringup/launch/omx_l_leader_ai.launch.py
+
+파일 안에서 이 줄을 찾는다
+default_value='/dev/serial/by-id/~~~'
+
+확인한 실제 장치 ID로 바꾼다
+예시
+default_value='/dev/serial/by-id/usb-FTDI_USB__-__Serial_Converter_ABC123'
+
+
+리더 / 팔로워 둘 다 해야 함
+omx_l_leader_ai.launch.py → 리더 포트
+omx_f_follower_ai.launch.py → 팔로워 포트
+
+수정 후 실행
+ros2 launch open_manipulator_bringup omx_ai.launch.py
+리더 / 팔로워 ID를 바꿔 넣음
+/dev/ttyUSB0 같은 걸 넣음 → 비추천
+/dev/serial/by-id/... 전체 경로 안 넣음
+
+반드시 전체 경로를 그대로 넣어야 한다
+
+
 6. 텔레오퍼레이션 실행
 ros2 launch open_manipulator_bringup omx_ai.launch.py
 >> 이 명령을 실행하면 팔로워가 초기 위치로 가고, 
   리더와 팔로워가 동기화
 
 cd ~/robotis_omx/open_manipulator/docker && ./container.sh start
-
