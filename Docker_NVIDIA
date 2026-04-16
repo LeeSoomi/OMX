@@ -46,6 +46,20 @@ newgrp docker
 
 이후 docker run hello-world처럼 sudo 없이 실행됩니다.
 
+1. 작업 폴더 만들고 저장소 받기
+mkdir -p ~/robotis_omx
+cd ~/robotis_omx
+git clone https://github.com/ROBOTIS-GIT/open_manipulator.git
+
+2. 도커 컨테이너 실행 (여기가 핵심)
+cd ~/robotis_omx/open_manipulator/docker
+./container.sh start
+
+
+컨테이너 안에서
+ls /dev
+
+
 ==================================================================
 NVIDIA
 
