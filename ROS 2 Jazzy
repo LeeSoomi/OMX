@@ -1,0 +1,51 @@
+Ubuntu 24.04 (noble) — Jazzy 바이너리는 Noble용입니다.
+확인: lsb_release -a
+
+1. UTF-8 로케일
+sudo apt update && sudo apt install locales
+sudo locale-gen en_US en_US.UTF-8
+sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+2. Universe + ROS 2 APT 저장소
+sudo apt install -y software-properties-common
+sudo add-apt-repository universe
+sudo apt update && sudo apt install -y curl
+export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F'"' '{print $4}')
+curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
+sudo dpkg -i /tmp/ros2-apt-source.deb
+
+
+dpkg에서 오류가 나면:
+sudo apt-get install -f
+
+
+3. (선택) 패키지 빌드·개발용
+sudo apt update && sudo apt install -y ros-dev-tools
+
+
+4. Jazzy Desktop 설치
+sudo apt update
+sudo apt upgrade -y
+sudo apt install -y ros-jazzy-desktop
+
+
+5. 셸에서 환경 로드
+source /opt/ros/jazzy/setup.bash
+
+매번 자동 로드(bash):
+grep -q 'jazzy/setup.bash' ~/.bashrc || echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
+
+(zsh면 setup.zsh와 ~/.zshrc.)
+
+6. 설치 확인 (데스크톱 데모)
+
+터미널 A:
+source /opt/ros/jazzy/setup.bash
+ros2 run demo_nodes_cpp talker
+
+터미널 B:
+source /opt/ros/jazzy/setup.bash
+ros2 run demo_nodes_py listener
+
+메시지가 오가면 정상입니다.
