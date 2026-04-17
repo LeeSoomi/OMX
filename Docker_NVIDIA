@@ -122,3 +122,19 @@ cd ~/robotis_omx/open_manipulator/docker
 ros2 launch open_manipulator_bringup omx_ai.launch.py
 
 
+종료 방법
+1. 실행 중인 ROS 먼저 종료
+Ctrl + C
+  >>
+  로봇 제어 노드
+  컨트롤러
+  통신
+  모두 정상적으로 종료
+
+2. 컨테이너 종료
+exit
+
+
+3. 도커 컨테이너 완전히 종료
+cd ~/robotis_omx/open_manipulator/docker
+./container.sh stop
