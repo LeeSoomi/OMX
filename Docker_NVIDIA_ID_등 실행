@@ -142,44 +142,53 @@ cd ~/robotis_omx/open_manipulator/docker
 ========================================
 
 
-1. NVIDIA 관련 완전 제거
+먼저 NVIDIA Container Toolkit 완전 제거.
 
-호스트 PC에서 실행
-
-sudo apt-get purge -y nvidia-container-toolkit nvidia-container-runtime
-
-
-2. 관련 설정 파일 제거
+sudo apt-get purge -y nvidia-container-toolkit nvidia-container-runtime nvidia-docker2
 sudo rm -rf /etc/nvidia-container-runtime
 sudo rm -rf /etc/nvidia-container-toolkit
-3. Docker 설정 완전 초기화
 
-이미 했지만 확실히 한 번 더
+Docker 설정에 남아 있는 NVIDIA runtime도 제거한다.
 
 sudo rm -f /etc/docker/daemon.json
-4. Docker + containerd 재시작
-sudo systemctl daemon-reexec
-sudo systemctl daemon-reload
-sudo systemctl restart containerd
-sudo systemctl restart docker
-5. 상태 확인
-sudo systemctl status docker
 
-여기서
+그다음 Docker 완전 제거.
 
-Active: active (running)
+sudo systemctl stop docker
+sudo systemctl stop containerd
+sudo apt-get purge -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker.io docker-compose
 
-이 나오면 정상
+Docker 데이터까지 완전히 삭제한다. 이 명령은 기존 컨테이너, 이미지, 볼륨을 모두 지운다.
 
-6. 만약 그래도 안 되면
+sudo rm -rf /var/lib/docker
+sudo rm -rf /var/lib/containerd
+sudo rm -rf /etc/docker
 
-이거 바로 확인
+불필요 패키지 정리.
 
-journalctl -xeu docker.service
-7. 한 줄 정리
+sudo apt-get autoremove -y
+sudo apt-get autoclean
 
-지금은
+혹시 snap으로 설치된 Docker가 있으면 제거한다.
 
-“GPU 설정 꼬임 상태”라서
-→ NVIDIA 완전 제거 + Docker 초기화가 정답
+snap list | grep docker
 
+나오면:
+
+sudo snap remove docker
+
+마지막 확인.
+
+docker --version
+
+정상적으로 제거되면 이런 식으로 나와야 한다.
+
+docker: command not found
+
+남아 있으면 위치 확인.
+
+which docker
+
+경로가 나오면 그 파일도 삭제한다.
+
+sudo rm -f $(which docker)
