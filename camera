@@ -97,4 +97,17 @@ cd ~/physical_ai_tools/docker
 source /opt/ros/jazzy/setup.bash
 source /root/ros2_ws/install/setup.bash
 ros2 run image_tools cam2image
+만약 여기서도 cam2image가 없다고 나오면 이걸 설치해.
 
+apt update
+apt install -y ros-jazzy-image-tools
+
+그 후 다시 실행.
+
+ros2 run image_tools cam2image
+
+다른 터미널 하나 더 열어서 Physical AI Tools 컨테이너 안에 들어간 뒤 확인해.
+
+ros2 topic list
+
+여기서 /image_raw/compressed 또는 /image/compressed 같은 토픽이 보여야 해.
