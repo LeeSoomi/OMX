@@ -111,3 +111,17 @@ ros2 run image_tools cam2image
 ros2 topic list
 
 여기서 /image_raw/compressed 또는 /image/compressed 같은 토픽이 보여야 해.
+
+가장 쉬운 방법은 YAML을 현재 실제 토픽에 맞추는 거야.
+
+nano /root/ros2_ws/src/physical_ai_tools/physical_ai_server/config/omx_f_config.yaml
+
+여기에서 이 부분을
+
+camera_topic_list:
+  - camera1:/image_raw/compressed
+
+또는 기존 값에서
+
+camera_topic_list:
+  - camera1:/image
